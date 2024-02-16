@@ -44,15 +44,21 @@ ppf_marginal_cost <- ggplot(data, aes(x = rabbits, y = blackberries)) +
   geom_area(fill = "#69b3a2", alpha = 0.4) +
   geom_line(color = "#ff0000", size = 2, alpha = 0.9, linetype = 1) +
   geom_text(aes(label = marginal_cost), vjust = 0.3, hjust = -1.5, size = 5) +
+  geom_segment(aes(y = 0, xend = rabbits, yend = blackberries),
+    color = "black", linetype = "dashed"
+  ) +
+  geom_segment(aes(x = 0, xend = rabbits, yend = blackberries),
+    color = "black", linetype = "dashed"
+  ) +
   annotate(
     "text",
     label = "Inefficient",
-    x = 2, y = 100, size = 5, colour = "#000000"
+    x = 1.5, y = 140, size = 5, colour = "#000000"
   ) +
   annotate(
     "text",
     label = "Impossible",
-    x = 4, y = 250, size = 5, colour = "#000000"
+    x = 4, y = 240, size = 5, colour = "#000000"
   ) +
   geom_point(shape = 19, color = "black", size = 5) + # , fill = ,
   theme_ipsum() +
