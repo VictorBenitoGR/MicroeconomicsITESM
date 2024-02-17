@@ -11,6 +11,7 @@
 # * Packages
 library(dplyr) # Data manipulation
 library(ggplot2) # Data visualization
+library(ggpattern) # Custom geoms from ggplot2
 library(gganimate) # // Animated plots with ggplot2
 library(babynames) # // Baby names dataset
 library(hrbrthemes) # Custom themes for ggplot2
@@ -34,40 +35,87 @@ ppf <- ggplot(data, aes(x = rabbits, y = blackberries)) +
   ) +
   theme_linedraw()
 
-# * Obtain the opportunity cost of catching rabbits at
-# * each point on the graph (marginal cost).
+# * Obtain the marginal cost of catching rabbits at each point.
 data$marginal_cost <- c(NA, diff(data$blackberries) / diff(data$rabbits))
-print(data)
 
 # * Plot | Production-Possibility Frontier (PPF) with marginal cost
 ppf_marginal_cost <- ggplot(data, aes(x = rabbits, y = blackberries)) +
-  geom_area(fill = "#69b3a2", alpha = 0.4) +
-  geom_line(color = "#ff0000", size = 2, alpha = 0.9, linetype = 1) +
-  geom_text(aes(label = marginal_cost), vjust = 0.3, hjust = -1.5, size = 5) +
+  geom_area_pattern(
+    data = data,
+    pattern = "gradient",
+    fill = "#00000000",
+    pattern_fill = "#00000000",
+    pattern_fill2 = "#10006b"
+  ) +
+  geom_point(shape = 16, size = 4.5, color = "#00065c") +
+  geom_point(shape = 16, size = 2.5, color = "white") +
   geom_segment(aes(y = 0, xend = rabbits, yend = blackberries),
-    color = "black", linetype = "dashed"
+    color = "#00000079", linetype = "dashed"
   ) +
   geom_segment(aes(x = 0, xend = rabbits, yend = blackberries),
-    color = "black", linetype = "dashed"
+    color = "#00000079", linetype = "dashed"
   ) +
   annotate(
     "text",
     label = "Inefficient",
-    x = 1.5, y = 140, size = 5, colour = "#000000"
+    x = 1.5, y = 140, size = 4, colour = "#b10000d3", fontface = "bold"
   ) +
   annotate(
     "text",
     label = "Impossible",
-    x = 4, y = 240, size = 5, colour = "#000000"
+    x = 4, y = 240, size = 4, colour = "#b10000d3", fontface = "bold"
   ) +
-  geom_point(shape = 19, color = "black", size = 5) + # , fill = ,
-  theme_ipsum() +
+  annotate("text",
+    x = 0.5, y = 300,
+    label = -20, # marginal_cost
+    hjust = 0.5,
+    size = 5,
+    fontface = "bold"
+  ) +
+  annotate("text",
+    x = 1.5, y = 280,
+    label = -40, # marginal_cost
+    hjust = 0.5,
+    size = 5,
+    fontface = "bold"
+  ) +
+  annotate("text",
+    x = 2.5, y = 230,
+    label = -60, # marginal_cost
+    hjust = 0.5,
+    size = 5,
+    fontface = "bold"
+  ) +
+  annotate("text",
+    x = 3.5, y = 160,
+    label = -80, # marginal_cost
+    hjust = 0.5,
+    size = 5,
+    fontface = "bold"
+  ) +
+  annotate("text",
+    x = 4.5, y = 80,
+    label = -100, # marginal_cost
+    hjust = 0.5,
+    size = 5,
+    fontface = "bold"
+  ) +
+  ggtitle("Production-Possibility Frontier (PPF) with margin cost | 🐇 Vs 🍇") +
   labs(
-    title = "Production-Possibility Frontier (PPF) with margin cost | 🐇 Vs 🍇",
     subtitle = "Imagine you are in the middle of nowhere and you can only hunt rabbits or pick blackberries to feed yourself.", # nolint: line_length_linter.
     x = "Number of Rabbits", y = "Number of Blackberries",
-    caption = "R Plot: @VictorBenitoGR | GitHub Repository: VictorBenitoGR/MicroeconomicsITESM", # nolint: line_length_linter.
-  )
+    caption = "R Plot: @VictorBenitoGR | GitHub Repository: VictorBenitoGR/MicroeconomicsITESM" # nolint: line_length_linter.
+  ) +
+  theme_ipsum() +
+  theme(
+    plot.title = element_text(size = 14),
+    panel.border = element_blank(),
+    axis.line.x = element_line(),
+    text = element_text(size = 12),
+    axis.ticks = element_blank(),
+    axis.text.y = element_text(margin = margin(0, 15, 0, 0, unit = "pt"))
+  ) +
+  scale_alpha_identity()
 
 # Save the plot
 ggsave("./assets/ppf_marginal_cost.jpg", ppf_marginal_cost,
