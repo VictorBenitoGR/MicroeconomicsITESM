@@ -19,13 +19,13 @@ library(grid) # // Graphic system base
 library(png) # // PNG image handling
 
 # * Create the DF with the given info
-data <- data.frame(
+df1 <- data.frame(
   rabbits = c(5, 4, 3, 2, 1, 0),
   blackberries = c(0, 100, 180, 240, 280, 300)
 )
 
 # * Plot | Production-Possibility Frontier (PPF)
-ppf <- ggplot(data, aes(x = rabbits, y = blackberries)) +
+ppf <- ggplot(df1, aes(x = rabbits, y = blackberries)) +
   geom_line() +
   geom_point() +
   labs(
@@ -36,12 +36,13 @@ ppf <- ggplot(data, aes(x = rabbits, y = blackberries)) +
   theme_linedraw()
 
 # * Obtain the marginal cost of catching rabbits at each point.
-data$marginal_cost <- c(NA, diff(data$blackberries) / diff(data$rabbits))
-
+df1$marginal_cost_etanol <- c(NA, diff(df1$blackberries) / diff(df1$rabbits))
+df1$marginal_cost <- c(NA, diff(df1$blackberries) / diff(df1$rabbits))
+View(df1)
 # * Plot | Production-Possibility Frontier (PPF) with marginal cost
-ppf_marginal_cost <- ggplot(data, aes(x = rabbits, y = blackberries)) +
+ppf_marginal_cost <- ggplot(df1, aes(x = rabbits, y = blackberries)) +
   geom_area_pattern(
-    data = data,
+    data = df1,
     pattern = "gradient",
     fill = "#00000000",
     pattern_fill = "#00000000",
